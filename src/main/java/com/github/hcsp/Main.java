@@ -27,23 +27,18 @@ public class Main {
         linkPool.add("https://news.sina.cn");
 
         while (true) {
-            if(linkPool.isEmpty()) {
+            if (linkPool.isEmpty()) {
                 break;
             }
-
             String link = linkPool.remove(linkPool.size() - 1);
 
-            if(processedLinks.contains(link)) {
+            if (processedLinks.contains(link)) {
                 continue;
             }
-
-            if(isInterestingLink(link)) {
+            if (isInterestingLink(link)) {
                 Document doc = httpGetAndParseHtml(link);
-
                 doc.select("a").stream().map(aTag -> aTag.attr("href")).forEach(linkPool::add);
-
                 storeIntoDatabaseIfItIsNewsPage(doc);
-
                 processedLinks.add(link);
             }
         }
